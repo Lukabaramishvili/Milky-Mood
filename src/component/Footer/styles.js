@@ -14,6 +14,15 @@ export const H2 = styled.h2`
     line-height: 0.7;
     margin: 0;
     padding: 15px;
+
+    @media (max-width: 900px) {
+        font-size: 44px;
+    }
+
+    @media (max-width: 700px) {
+        font-size: 24px;
+        padding: 0;
+    }
 `
 
 export const H2Middle = styled(H2) `
@@ -22,9 +31,11 @@ export const H2Middle = styled(H2) `
     text-align: center;
 
     &::after {
+    background-color: #fbfbfb;
     content: '';
-    background-color: #FBFBFB;
+    display: block;
     height: 2px;
+    position: absolute;
     left: 15px;
     right: 15px;
     top: 55%;
