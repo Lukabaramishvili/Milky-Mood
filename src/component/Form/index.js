@@ -1,16 +1,52 @@
 import React from 'react';
+import * as Yup from 'yup';
+import { Formik, Form, useField } from 'formik';
+import {Input, Label, Error, Submit} from './styles';
+
+const InputComponent = ({label, ...props}) => {
+    const [field, meta]= useField(props);
+
+    return (
+        <Label>
+            {label}: {meta.touched && meta.error && <Error>{meta.error}</Error>}
+            <Input {...field} {...props} />
+        </Label>
+    )
+}
 
 const FormComponent = ({handleSuccess}) => {
+    const schema = Yup.object().shape({
+        name: Yup.string().required('Required field'),
+        email: Yup.string().email('Must be a valid email address').required('Required field')
+    })
+
     return (
-        <form onSubmit = {handleSuccess} >
-            <label for="name">Name: </label>
-            <input name="name" type="text" required autoComplete="off"/>
+        <Formik
+            initialValues={{
+                name: '',
+                email: ''
+        }}
+        onSubmit = {handleSuccess}
+        validationSchema={schema}
+        >
+            {() => (
+                <Form>
+                    <InputComponent 
+                        name="name" 
+                        type="text" 
+                        label="name" 
+                        autoComplete="off"/>
 
-            <label for="email">Email address: </label>
-            <input name="email" type="email" required autoComplete="off"/>
+                    <InputComponent 
+                        name="email" 
+                        type="email" 
+                        label="Email" 
+                        autoComplete="off"/>
 
-            <button type="submit">Submit</button>
-        </form>
+                    <Submit type="submit">Submit</Submit>
+                </Form>
+            )}
+        </Formik>
     )
 }
 
